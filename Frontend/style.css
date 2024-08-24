@@ -207,3 +207,470 @@ body{
     font-size: 18px;
     line-height: 28px;
 }
+
+/* ----------------- Grid -------------------- */
+
+.outer_div{
+    display: flex;
+    justify-content: center;
+    width: 100vw;
+    height: 1750px;
+}
+
+.grid{
+    position: relative;
+    top: 350px;
+    left: 100px;
+    height: 1750px;
+    display: grid;
+    grid-template-rows: 650px 650px;
+    grid-template-columns: repeat(2, 900px);
+    grid-template-areas:
+    "upper_left     upper right "
+    "lower_left     upper_right "
+    ;
+}
+
+/* --------------- Upper Left Grid ---------------- */
+
+
+.upper_left{
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr;
+    overflow: hidden;
+}
+
+
+
+.upper_left .text{
+    width: 900px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    position: relative;
+    top: -510px;
+    background: transparent;
+    text-shadow: 1px 5px 12px black;
+}
+
+.upper_left .text .p_caption{
+    background: transparent;
+    font-weight: 500;
+    font-size: 56px ;
+}
+
+.upper_left .info_text{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    position: relative;
+    bottom: 410px;
+    background-color: transparent;
+    text-align: center;
+    text-shadow: 0px 4px 5px black;
+    width: 900px;
+}
+
+.upper_left .p_info{
+    background-color: transparent;
+    font-weight: 500;
+    font-size: 20px ;
+    width: 600px;
+}
+
+.upper_left img{
+    height: 650px;
+    width: 1000px;
+    position: relative;
+    left: -100px;
+    opacity: 0.7;
+}
+
+
+/* ------------ Upper Right Grid ------------- */
+
+.upper_right{
+    display: grid;
+    width: 650px;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(2, 325px);
+    grid-template-areas:
+    "top   "
+    "bottom";
+    height: 650px;
+}
+
+/* ------------ Upper Right Grid -> Top ------------- */
+
+.upper_right .top{
+    display: grid;
+    grid-template-rows: repeat(1, 325px);
+    grid-template-columns: repeat(2, 325px);
+    grid-template-areas: "top_left" "top_right";
+}
+
+.upper_right .top_left{
+    height: 325px;
+    width: 325px;
+}
+
+.upper_right .top_left img{
+    height: 325px;
+    width: 325px;
+}
+
+
+.upper_right .top .text_heading{
+    color: white;
+    text-align: center;
+    font-size: 28px;
+    position: relative;
+    top: 24px;
+    font-weight: 600;
+    width: 325px;
+}
+
+.upper_right .top .text_info{
+    color: white;
+    box-sizing: border-box;
+    padding: 40px;
+    width: 300px;
+    font-size: 17px;
+    position: relative;
+    top: 20px;
+    left: 13px;
+    background-color: transparent;
+    font-weight: 400;
+}
+
+/* ------------ Upper Right Grid -> Bottom ------------- */
+
+.upper_right .bottom{
+    display: grid;
+    grid-template-rows: repeat(1, 325px);
+    grid-template-columns: repeat(2, 325px);
+    grid-template-areas:
+    "bottom_left "
+    "bottom_right";
+}
+
+
+.bottom_left{
+    height: 325px;
+    width: 325px;
+    color: white;
+}
+
+.bottom_left .text_heading{
+    color: white;
+    text-align: center;
+    font-size: 28px;
+    position: relative;
+    top: 40px;
+    font-weight: 600;
+    width: 325px;
+}
+
+
+.bottom_left .text_info{
+    color: white;
+    box-sizing: border-box;
+    padding: 40px;
+    width: 300px;
+    font-size: 17px;
+    position: relative;
+    top: 35px;
+    left: 13px;
+    background-color: transparent;
+    font-weight: 400;
+}
+
+
+.upper_right .bottom_right{
+    overflow: hidden;
+}
+
+
+.upper_right .bottom_right img{
+    height: 325px;
+    width: 454px;
+    object-fit: cover/contain;
+}
+
+/* --------------- Lower Left Grid ------------------ */
+
+.lower_left{
+    display: grid;
+    grid-template-rows: repeat(2, 325px);
+    grid-template-columns: 1fr;
+    grid-template-areas: "top"
+                         "bottom";
+}
+
+/* ----------------- Lower Left Grid -> Top --------------- */
+
+.lower_left .top .text_heading{
+    color: white;
+    text-align: center;
+    font-size: 28px;
+    position: relative;
+    top: 76px;
+    font-weight: 600;
+    width: 325px;
+    left: 10px;
+}
+
+.lower_left .top .text_info{
+    color: white;
+    box-sizing: border-box;
+    padding: 60px;
+    font-size: 17px;
+    position: relative;
+    top: 62px;
+    left: 13px;
+    background-color: transparent;
+    font-weight: 400;
+}
+
+/* ----------------- Lower Left Grid -> Bottom --------------- */
+
+.lower_left .bottom{
+    overflow: hidden;
+}
+
+.lower_left .bottom img{
+    height: 450px;
+    width: 900px;
+    object-fit: cover;
+    position: relative;
+    bottom: 122px;
+}
+
+/* --------------- Lower Right Grid ----------------- */
+
+.lower_right{
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr;
+    overflow: hidden;
+    background-color: #000000;
+}
+
+.lower_right img{
+    height: 650px;
+    width: 900px;
+    position: relative;
+    left: -96px;
+    top: 90px;
+}
+
+
+.lower_right p{
+    background-color: transparent;
+}
+
+.lower_right .text_heading{
+    color: white;
+  text-align: center;
+  font-size: 46px;
+  position: relative;
+  bottom: 471px;
+  font-weight: 600;
+  width: 325px;
+  left: 117px;
+  background: transparent;
+  text-shadow: 1px 5px 12px black;
+}
+
+.lower_right .text-info{
+    color: white;
+    box-sizing: border-box;
+    padding: 60px;
+    font-size: 18px;
+    position: relative;
+    top: -477px;
+    left: 58px;
+    background-color: transparent;
+    font-weight: 400;
+    text-shadow: 1px 5px 8px black;
+    width: 564px;
+}
+
+
+/* ------------ Down Arrow ----------------- */
+
+.down-arrow{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    position: relative;
+    top: 271px;
+    height: 50px;
+    animation: vertical 1.5s  linear infinite
+}
+
+@keyframes vertical {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-25%);
+    }
+    100%{
+        transform: translateY(0%);
+    }
+}
+
+.fa-solid{
+    color: #ffd100;
+    font-size: 30px;
+}
+
+
+/* -------------- Scroll ------------------- */
+
+.outer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.text-scroll{
+    position: relative;
+    top: 234px;
+    height: 60px;
+    width: 800px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+}
+
+
+
+.scroll-container {
+    width: 100vw;
+    height: 450px;
+    overflow: hidden;
+    position: relative;
+    top: 300px;
+    display: flex;
+    box-sizing: border-box;
+}
+
+.scroll-content {
+    display: flex;
+    width: 350%;
+    animation: scroll 22s linear infinite;
+}
+
+.scroll-container:hover .scroll-content{
+    animation-play-state: paused!important;
+    cursor: pointer;
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+.scroll-content .one{
+    height: 409px;
+    width: 546px;
+}
+
+.scroll-content .two{
+    height: 409px;
+    width: 462px;
+}
+
+.scroll-content .three{
+    height: 409px;
+    width: 498px;
+}
+
+.scroll-content .four{
+    height: 409px;
+    width: 447px;
+}
+
+.scroll-content .five{
+    height: 409px;
+    width: 475px;
+}
+
+.scroll-content .six{
+    height: 409px;
+    width: 535px;
+}
+
+.scroll-content .seven{
+    height: 409px;
+    width: 408px;
+}
+
+.scroll-content .eight{
+    height: 409px;
+    width: 493px;
+}
+
+.scroll-content .nine{
+    height: 409px;
+    width: 457px;
+}
+
+.scroll-content .eleven{
+    height: 409px;
+    width: 560px;
+}
+
+.scroll-content .ten{
+    height: 409px;
+    width: 587px;
+}
+
+.scroll-content img {
+    height: 400px;
+    width: 350px;
+    padding: 20px;
+    border-radius: 25px;
+}
+
+
+
+.colored-line{
+    height: 1px;
+    background-color: #ffd100;
+    position: relative;
+    top: 57px;
+    opacity: 0.8;
+}
+
+
+/* ------------ Copyright --------------- */
+
+.copyright{
+    height: 20px;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    bottom: -303px;
+    background-color: #0a0a0a;
+}
+
+.inner-copyright{
+    color: white;
+}
+
+

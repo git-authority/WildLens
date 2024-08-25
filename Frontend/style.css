@@ -1832,7 +1832,7 @@ button[type="submit"] {
     font-size: 18px;
     transition: background-color 0.3s;
     position: relative;
-    left: 44px;
+    left: 27px;
     top: 15px;
     font-weight: 600;
     height: 38px;
@@ -1904,7 +1904,7 @@ button[type="submit"] {
     justify-content: center;
     align-items: center;
     position: relative;
-    bottom: 124px;
+    bottom: 27px;
 }
 
 

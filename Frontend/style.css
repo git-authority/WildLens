@@ -1962,152 +1962,79 @@ button[type="submit"] {
 .main_result .grid_result {
     display: grid;
     grid-template-areas:
-        "top"
-        "bottom";
-    grid-template-rows: 500px 400px;
-    width: 100vw;
-    padding: 50px;
+        "left"
+        "right";
+    grid-template-columns: 500px 700px;
+    grid-template-rows: 700px;
 }
 
-/* ------------ Top Grid -------------- */
-
-.main_result .top {
-    display: grid;
-    grid-template-areas: "top-left  top-right";
-    grid-template-columns: 500px 932px;
-    height: 500px;
-    border: 1px solid white;
-}
-
-
-
-
-/* -------------- Top Left ----------------- */
-
-.grid_result .top-left {
-    height: 500px;
-    box-sizing: border-box;
-}
-
-.grid_result .top-left .image-div {
+.grid_result .left{
     display: flex;
     justify-content: center;
-    padding: 20px;
-    height: 500px;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    padding: 10px;
     box-sizing: border-box;
 }
 
-.grid_result .top-left img {
-
-    height: 459px;
-    width: 459px;
-    opacity: 0.83;
-    background-size: contain;
-    border-radius: 5px;
+.grid_result .left img{
+    height: 500px;
+    width: 500px;
 }
 
-/* ---------- Top Right Grid --------------- */
-
-.main_result .top-right {
-    display: grid;
-    grid-template-areas:
-        "first"
-        "second"
-        "third";
-    grid-template-rows: repeat(3, 1fr);
-    border-left: 1px solid white;
-}
-
-/* ------------- Top Right -> First ---------------- */
-
-.grid_result .top-right {
+.grid_result .right{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
     width: 100%;
 }
 
-.grid_result .predicted_species {
-    padding: 25px;
-    display: flex;
-    align-items: center;
-    height: 166.67px;
+.grid_result .right .backend{
+    padding: 20px;
     box-sizing: border-box;
+    height: 100%;
+    width: 100%;
 }
 
-.grid_result .predicted_species p {
+.backend{
     color: white;
-    font-size: 20px;
+    font-size: 15px;
+    height: 100%;
+    width: 100%;
 }
 
-/* ------------- Top Right -> Second ---------------- */
+@media only screen and (max-width:412px) {
+    .main-text .first{
+        width: 400px;
+    }
+    .main-text {
+        height: 325px;
+        width: 100vw;
+        position: relative;
+        top: 225px;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+      }
 
-.grid_result .potential_threat {
-    padding: 25px;
-    display: flex;
-    align-items: center;
-    height: 166.67px;
-    box-sizing: border-box;
-    border-top: 1px solid white;
-    border-bottom: 1px solid white;
-}
+      .main-text .first {
+        width: 304px;
+        position: relative;
+        top: -50px;
+        height: 169px;
+      }
 
-.grid_result .potential_threat p {
-    color: white;
-    font-size: 20px;
-}
-
-/* ------------- Top Right -> Third ---------------- */
-
-.grid_result .conservation_status {
-    padding: 25px;
-    display: flex;
-    align-items: center;
-    height: 166.67px;
-    box-sizing: border-box;
-}
-
-.grid_result .conservation_status p {
-    color: white;
-    font-size: 20px;
-}
-
-/* --------------- Bottom Grid ---------------- */
-
-.main_result .bottom {
-    display: grid;
-    grid-template-areas:
-        "up"
-        "down";
-    grid-template-rows: repeat(2, 1fr);
-    border: 1px solid white;
-}
-
-/* ------------ Bottom -> Up -------------- */
-
-.grid_result .description {
-    padding: 25px;
-    display: flex;
-    align-items: center;
-    height: 200px;
-    box-sizing: border-box;
-    border-bottom: 1px solid white;
-}
-
-.grid_result .description p {
-    color: white;
-    font-size: 20px;
-}
-
-/* ------------ Bottom -> Down -------------- */
-
-.grid_result .fun_fact {
-    padding: 25px;
-    display: flex;
-    align-items: center;
-    height: 200px;
-    box-sizing: border-box;
-    border-bottom: 1px solid white;
-}
-
-.grid_result .fun_fact p {
-    color: white;
-    font-size: 20px;
+      .main-text .second {
+        height: 200px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        bottom: 40px;
+        background: transparent;
+        width: 374px;
+        font-size: -5px;
+      }
 }

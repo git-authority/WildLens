@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Species Classifier</title>
+</head>
+<body>
+    <h1>Species Classifier</h1>
+
+    <form action="/prediction" method="post" enctype="multipart/form-data">
+        <h2>Upload an Image</h2>
+        <input type="file" name="img" accept="image/*">
+
+        <h2>OR</h2>
+
+        <h2>Upload a Video</h2>
+        <input type="file" name="video" accept="video/*">
+
+        <br><br>
+        <button type="submit">Subm
+            it</button>
+    </form>
+
+    {% if img_filename %}
+        <h3>Uploaded Image:</h3>
+        <img src="{{ img_filename }}" alt="Uploaded Image" style="max-width:500px;">
+    {% elif video_filename %}
+        <h3>Uploaded Video:</h3>
+        <video controls style="max-width:500px;">
+            <source src="{{ video_filename }}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    {% endif %}
+</body>
+</html>

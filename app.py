@@ -1,37 +1,26 @@
-from flask import Flask, render_template, request, redirect, url_for
-from io import BytesIO
-from PIL import Image
-import pandas as pd
-from model import load_species_classifier_model, predict_species_from_array, preprocess_image_from_stream
-import base64
+from flask import Flask, render_template, request, send_from_directory
+from keras.models import load_model
+import cv2
+import numpy as np
+import os
 
 app = Flask(__name__)
 
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+# Load the model 
+model = load_model('species_classifier_final (1).h5')
+print("+"*50, "H5 Model is loaded")
 
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+# Define the labels
+labels = ['antelope', 'badger', 'bald_eagle', 'bat', 'bear', 'bee', 'beetle', 'bighorn_sheep', 'bison', 'black_bear', 'boar', 'burrowing_owl', 'butterfly', 'canada_goose_bird', 'caribou', 'cat', 'caterpillar', 'chimpanzee', 'cockroach', 'cougar', 'cow', 'coyote', 'crab', 'crow', 'deer', 'dog', 'dolphin', 'donkey', 'dragonfly', 'duck', 'eagle', 'elephant', 'elk', 'flamingo', 'fly', 'fox', 'goat', 'golden_eagle', 'goldfish', 'goose', 'gorilla', 'grasshopper', 'great_horned_owl', 'grizzly_bear', 'hamster', 'hare', 'hedgehog', 'hippopotamus', 'hornbill', 'horse', 'hummingbird', 'hyena', 'jellyfish', 'kangaroo', 'koala', 'ladybugs', 'leopard', 'lion', 'lizard', 'lobster', 'lynx', 'moose', 'mosquito', 'moth', 'mountain_goat', 'mouse', 'mule_deer', 'octopus', 'okapi', 'orangutan', 'otter', 'owl', 'ox', 'oyster', 'panda', 'parrot', 'pelecaniformes', 'penguin', 'pig', 'pigeon', 'pine_marten', 'porcupine', 'possum', 'raccoon', 'rat', 'reindeer', 'rhinoceros', 'river_otter', 'sandpiper', 'seahorse', 'seal', 'shark', 'sheep', 'snake', 'snow_goose', 'sparrow', 'squid', 'squirrel', 'starfish', 'swan', 'tiger', 'turkey', 'turtle', 'whale', 'white_tail_deer', 'wolf', 'wombat', 'woodpecker', 'zebra']
 
-# Load species information from Excel (.xlsx) file
-try:
-    species_info = pd.read_excel('Animal_Data.xlsx', engine='openpyxl')
-    if 'Species' not in species_info.columns:
-        raise ValueError("The 'Species' column is missing in the Excel file.")
-except FileNotFoundError as e:
-    print(f"Error loading Excel file: {e}")
-    species_info = pd.DataFrame()  
-except ValueError as ve:
-    print(f"ValueError: {ve}")
-    species_info = pd.DataFrame()
+# Set up static folder for uploaded files
+UPLOAD_FOLDER = 'static/uploads/'
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
 
-model = load_species_classifier_model()
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-# Converting video to frames (optional functionality)
-
-def video_to_frames(video_path, output_folder='frames', frame_size=(224, 224)):
-    if not os.path.exists(output_folder):
-        os.makedirs(output_folder)
-
+def video_to_frames(video_path, frame_size=(224, 224)):
     video = cv2.VideoCapture(video_path)
     frames = []
     frame_count = 0
@@ -47,75 +36,69 @@ def video_to_frames(video_path, output_folder='frames', frame_size=(224, 224)):
         frames.append(frame)
     
     video.release()
-
     print(f"Total frames extracted: {frame_count}")
     return np.array(frames)
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template("index.html", data="hey")
 
-@app.route('/upload', methods=['GET', 'POST'])
-def upload():
-    if request.method == 'POST':
-        if 'file' not in request.files:
-            print("No file part in request.")
-            return redirect(url_for('index'))
+@app.route("/prediction", methods=["POST"])
+def prediction():
+    # Check if an image was uploaded
+    if 'img' in request.files and request.files['img'].filename != '':
+        img = request.files['img']
+        img_filename = os.path.join(app.config['UPLOAD_FOLDER'], "uploaded_image.jpg")
+        img.save(img_filename)
         
-        file = request.files['file']
-        if file.filename == '':
-            print("Empty filename.")
-            return redirect(url_for('index'))
+        # Load and preprocess image
+        image = cv2.imread(img_filename)
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        image = cv2.resize(image, (224, 224))
+        image = np.reshape(image, (1, 224, 224, 3))
+        image = image.astype(np.float32) / 255.0
         
-        if file and allowed_file(file.filename):
-            try:
-                img_stream = BytesIO(file.read())
-                image = Image.open(img_stream)
-
-                if image.mode in ("RGBA", "P"):
-                    image = image.convert("RGB")
-                
-                processed_image = preprocess_image_from_stream(image)
-                species = predict_species_from_array(model, processed_image)
-                
-                print(f"Prediction made: {species}")
-                
-                # Convert image to base64 string
-                buffered = BytesIO()
-                image.save(buffered, format="JPEG")
-                img_str = base64.b64encode(buffered.getvalue()).decode()
-
-                # Retrieve species information from the Excel file
-                species_data = {}
-                if not species_info.empty and 'Species' in species_info.columns:
-                    # Ensure species column and predicted species are both lowercase and stripped of spaces
-                    species_info['Species'] = species_info['Species'].str.strip().str.lower()
-                    species = species.strip().lower()
-                    
-                    species_data = species_info[species_info['Species'] == species].to_dict('records')
-                    
-                    if species_data:
-                        species_data = species_data[0]
-                        print(f"Species data found: {species_data}")
-                    else:
-                        print(f"No matching species data found for: {species}")
-                        species_data = {}
-                else:
-                    print("No species data found or Excel file is empty.")
-                
-                return render_template('result.html', img_str=img_str, species=species, species_data=species_data)
-            except Exception as e:
-                print(f"An unexpected error occurred: {e}")
-                return (f"An unexpected error occurred: {e}")
+        # Predict on the image
+        pred = model.predict(image)
+        pred_index = np.argmax(pred, axis=1)[0]
+        pred_label = labels[pred_index]
+        
+        return render_template("prediction.html", data=pred_label, img_filename=img_filename, video_filename=None)
     
-    return render_template('upload.html')
+    # Check if a video was uploaded
+    elif 'video' in request.files and request.files['video'].filename != '':
+        video = request.files['video']
+        video_filename = os.path.join(app.config['UPLOAD_FOLDER'], "uploaded_video.mp4")
+        video.save(video_filename)
+        
+        # Verify if the video file was saved successfully
+        if not os.path.exists(video_filename):
+            return "Video could not be saved. Please try again."
+        
+        # Check the file size to ensure it is not empty
+        file_size = os.path.getsize(video_filename)
+        print(f"Saved video file size: {file_size} bytes")
+        if file_size == 0:
+            return "Saved video file is empty. Please try again."
 
-@app.route('/about')
-def about():
-    return render_template('about.html')
+        # Attempt to extract frames from the video
+        frames = video_to_frames(video_filename)
+        if frames.size == 0:
+            return "Failed to extract frames from video. Please try again."
+        
+        # Normalize frames
+        frames = frames.astype(np.float32) / 255.0
+        
+        # Predict on each frame and average the predictions
+        preds = model.predict(frames)
+        pred = np.mean(preds, axis=0)
+    
+        pred_index = np.argmax(pred)
+        pred_label = labels[pred_index]
+    
+        return render_template("prediction.html", data=pred_label, img_filename=None, video_filename=video_filename)
+    
+    return "No file uploaded. Please upload an image or a video."
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)
-
-
-

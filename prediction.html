@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Result</title>
+</head>
+<body>
+    <h1>Prediction Result</h1>
+    
+    <p>Predicted Species: {{ data }}</p>
+
+    {% if img_filename %}
+        <h3>Uploaded Image:</h3>
+        <img src="{{ img_filename }}" alt="Uploaded Image" style="max-width:500px;">
+    {% elif video_filename %}
+        <h3>Uploaded Video:</h3>
+        <video controls style="max-width:500px;">
+            <source src="{{ video_filename }}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    {% endif %}
+
+    <br>
+    <a href="/">Upload Another File</a>
+</body>
+</html>
